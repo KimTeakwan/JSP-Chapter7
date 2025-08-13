@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>textContent와 innerHTML</title>
+</head>
+<body>
+  <div id="a"></div>
+  <div id="b"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 특정 id를 가진 요소를 선택합니다.
+      const a = document.querySelector('#a');
+      const b = document.querySelector('#b');
+
+      // textContent와 innerHTML 속성을 사용하여 내용을 변경합니다.
+      a.textContent = '<h1>textContent 속성</h1>';
+      b.innerHTML = '<h1>innerHTML 속성</h1>';
+    });
+  </script>
+</body>
+</html>

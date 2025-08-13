@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <!-- 이벤트 활용(5) 키보드 이벤트와 관련된 이벤트 속성 -->
+<head> 
+    <title>키보드 이벤트 속성</title>
+</head>
+<body>
+
+    <h1></h1>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const h1 = document.querySelector('h1');
+            // 키보드 이벤트 정보를 출력하는 함수
+            const print = (event) => {
+                let output = '';
+                output += `alt: ${event.altKey}<br>`;
+                output += `ctrl: ${event.ctrlKey}<br>`;
+                output += `shift: ${event.shiftKey}<br>`;
+                
+                // event.code가 최신 표준이므로 우선 사용하고, 없으면 구버전인 event.keyCode를 사용
+                output += `code: ${typeof(event.code) !== 'undefined' ? event.code : event.keyCode}<br>`;
+                
+                h1.innerHTML = output;
+            };
+
+            // 문서 전체에 keydown과 keyup 이벤트를 연결
+            document.addEventListener('keydown', print); // 키를 누르고 있을 때
+            document.addEventListener('keyup', print);   // 키에서 손을 뗄 때
+        });
+    </script>
+</body>
+</html>

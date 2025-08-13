@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>querySelector</title>
+</head>
+<body>
+  <h1>querySelector 메소드를 사용합니다.</h1>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 요소를 읽어들입니다.
+      const header = document.querySelector('h1');
+
+      // 텍스트와 스타일을 변경합니다.
+      header.textContent = '새로운 헤더 텍스트';
+      header.style.color = 'red';
+      header.style.fontSize = '30px';
+      header.style.backgroundColor = 'yellow';
+      header.style.padding = '20px';
+    });
+  </script>
+</body>
+</html>

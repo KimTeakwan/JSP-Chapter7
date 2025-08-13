@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <!-- 이벤트 활용 (6) 키로 별 움직이기 -->
+<head>
+    <title>키보드로 별 움직이기</title>
+</head>
+<body>
+
+    <h1>★</h1>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. 별의 초기 스타일 설정
+            const star = document.querySelector('h1');
+            star.style.position = 'absolute'; // CSS position을 absolute로 해야 top, left 속성으로 이동 가능
+
+            // 2. 별의 좌표와 이동 단위 설정
+            let [x, y] = [0, 0];      // 별의 좌표 (x, y)
+            const block = 20;         // 한 번에 이동할 거리 (20px)
+            
+            // 3. 별의 위치를 화면에 그려주는 함수
+            const print = () => {
+                star.style.left = `${x * block}px`;
+                star.style.top = `${y * block}px`;
+            };
+            print(); // 맨 처음 위치를 지정하기 위해 한번 호출
+
+            // 4. 키보드 이벤트로 별을 이동시키는 기능
+            const [left, up, right, down] = [37, 38, 39, 40]; // 방향키의 keyCode 값
+            
+            document.body.addEventListener('keydown', (event) => {
+                // event.keyCode 값에 따라 분기
+                switch (event.keyCode) {
+                    case left:
+                        x -= 1;
+                        break;
+                    case up:
+                        y -= 1;
+                        break;
+                    case right:
+                        x += 1;
+                        break;
+                    case down:
+                        y += 1;
+                        break;
+                }
+                print(); // 좌표가 변경된 후, 화면에 다시 그려줌
+            });
+        });
+    </script>
+</body>
+</html>

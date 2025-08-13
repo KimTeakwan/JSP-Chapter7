@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>글자 수 출력하기 (focus/blur)</title>
+</head>
+<body>
+
+    <h1></h1>
+    <textarea></textarea>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 조작할 문서 객체 선택
+            const textarea = document.querySelector('textarea');
+            const h1 = document.querySelector('h1');
+            let timerId; // 타이머 ID를 저장할 변수
+
+            // textarea에 'focus' 이벤트 리스너 추가
+            textarea.addEventListener('focus', (event) => {
+                // 입력 양식 활성화: 50ms마다 글자 수를 세는 setInterval 시작
+                timerId = setInterval(() => {
+                    const length = textarea.value.length;
+                    h1.textContent = `글자 수: ${length}`;
+                }, 50);
+            });
+
+            // textarea에 'blur' 이벤트 리스너 추가
+            textarea.addEventListener('blur', (event) => {
+                // 입력 양식 비활성화: setInterval 정지
+                clearInterval(timerId);
+            });
+        });
+    </script>
+</body>
+</html>

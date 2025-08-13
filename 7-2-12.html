@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>체크박스로 링크 활성화</title>
+    <style>
+        label { 
+            cursor: pointer; 
+            user-select: none; /* 텍스트 선택 방지 */
+        }
+    </style>
+</head>
+<body>
+
+    <label>
+        <input type="checkbox">
+        <span>링크 활성화</span>
+    </label>
+    <br>
+    <a href="https://hanbit.co.kr" target="_blank">한빛미디어</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 체크 상태를 저장할 변수 (초기값: false)
+            let status = false;
+
+            // 조작할 문서 객체 선택
+            const checkbox = document.querySelector('input');
+            const link = document.querySelector('a');
+
+            // 1. 체크박스의 상태가 변경될 때마다 status 변수 업데이트
+            checkbox.addEventListener('change', (event) => {
+                status = event.currentTarget.checked;
+            });
+
+            // 2. 링크를 클릭했을 때
+            link.addEventListener('click', (event) => {
+                // status가 false(체크 안 됨)이면, 기본 동작(페이지 이동)을 막음
+                if (!status) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

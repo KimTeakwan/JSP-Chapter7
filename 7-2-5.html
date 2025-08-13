@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!-- 이메일 형식 확인하기 -->
+<html>
+<head>
+    <title>이메일 형식 독립 검사</title>
+    <style>
+        body { font-family: sans-serif; padding: 10px; }
+        .validator-box { 
+            border: 1px solid #ccc; 
+            padding: 20px; 
+            margin-bottom: 25px; 
+            border-radius: 8px; 
+        }
+        h2 { margin-top: 0; }
+        input { width: 95%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;}
+        p { font-weight: bold; min-height: 1.2em; /* 메시지 공간 미리 확보 */ }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+
+    <div class="validator-box">
+        <h2>예제 1: 올바른 형식 입력해보기</h2>
+        <input type="text" id="email_input_1" placeholder="예: user@example.com">
+        <p id="message_1"></p>
+    </div>
+
+    <div class="validator-box">
+        <h2>예제 2: 틀린 형식 입력해보기</h2>
+        <input type="text" id="email_input_2" placeholder="예: user@example">
+        <p id="message_2"></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 이메일 형식인지 검사하는 공통 함수
+            const isEmail = (value) => {
+                // 골뱅이(@)와 점(.)이 있는지 간단히 확인
+                return (value.indexOf('@') > 0) && (value.split('@')[1].indexOf('.') > 0);
+            };
+
+            // 검사 로직을 설정하는 함수 (코드 중복을 줄이기 위해)
+            const setupValidator = (inputId, messageId) => {
+                const inputElement = document.querySelector(inputId);
+                const messageElement = document.querySelector(messageId);
+
+                inputElement.addEventListener('keyup', (event) => {
+                    const value = event.currentTarget.value;
+                    
+                    if (value === "") {
+                        messageElement.textContent = '';
+                        return;
+                    }
+                    
+                    if (isEmail(value)) {
+                        messageElement.textContent = '✅ 올바른 이메일 형식입니다.';
+                        messageElement.className = 'success';
+                    } else {
+                        messageElement.textContent = '❌ 올바르지 않은 이메일 형식입니다.';
+                        messageElement.className = 'error';
+                    }
+                });
+            };
+
+            // 각 예제에 대해 검사 로직을 설정
+            setupValidator('#email_input_1', '#message_1');
+            setupValidator('#email_input_2', '#message_2');
+
+        });
+    </script>
+
+</body>
+</html>

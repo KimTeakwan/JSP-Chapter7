@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--체크박스 활용해서 타이머 만들기-->
+<html>
+<head>
+    <title>체크박스 타이머</title>
+    <style>
+        /* 라벨을 클릭해도 체크박스가 선택되도록 커서 모양 변경 */
+        label {
+            cursor: pointer;
+            user-select: none; /* 텍스트 선택 방지 */
+        }
+    </style>
+</head>
+<body>
+    
+    <label>
+        <input type="checkbox">
+        <span>타이머 활성화</span>
+    </label>
+    <h1></h1>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 타이머 숫자와 타이머 ID를 저장할 변수
+            let timer = 0;
+            let timerId = 0;
+
+            // 조작할 문서 객체 선택
+            const h1 = document.querySelector('h1');
+            const checkbox = document.querySelector('input');
+
+            // 체크박스에 'change' 이벤트 리스너 추가
+            checkbox.addEventListener('change', (event) => {
+                // event.currentTarget.checked: 체크박스의 체크 상태 (true/false)
+                if (event.currentTarget.checked) {
+                    // 체크 상태일 때: 1초마다 타이머를 증가시키는 setInterval 실행
+                    timerId = setInterval(() => {
+                        timer += 1;
+                        h1.textContent = `${timer}초`;
+                    }, 1000);
+                } else {
+                    // 체크 해제 상태일 때: setInterval을 정지
+                    clearInterval(timerId);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>문서 객체 이동 예제</title>
+</head>
+<body>
+
+    <div id="first">
+        <h1>첫 번째 div 태그 내부</h1>
+    </div>
+    
+    <hr>
+    
+    <div id="second">
+        <h1>두 번째 div 태그 내부</h1>
+    </div>
+
+    <script>
+        // 문서가 모두 로드되면 스크립트를 실행합니다.
+        document.addEventListener('DOMContentLoaded', () => {
+          
+          // 1. 필요한 요소들을 선택하고, 이동시킬 새로운 h1 요소를 생성합니다.
+          const divA = document.querySelector('#first');
+          const divB = document.querySelector('#second');
+          const h1 = document.createElement('h1');
+          h1.textContent = '✨ 이동하는 h1 태그 ✨'; // 이동할 태그의 텍스트
+          
+          // 2. 두 함수를 정의하여 서로를 호출하게 만듭니다.
+
+          // 'toFirst' 함수: h1을 첫 번째 div로 옮기고 1초 후에 'toSecond'를 호출합니다.
+          const toFirst = () => {
+            // appendChild는 이미 문서에 존재하는 요소를 인자로 받으면, 해당 요소를 이동시킵니다.
+            divA.appendChild(h1);
+            setTimeout(toSecond, 1000); // 1000ms = 1초
+          };
+
+          // 'toSecond' 함수: h1을 두 번째 div로 옮기고 10초 후에 'toFirst'를 호출합니다.
+          const toSecond = () => {
+            divB.appendChild(h1);
+            setTimeout(toFirst, 10000); // 10000ms = 10초
+          };
+          
+          // 3. 첫 번째 함수를 호출하여 이동을 시작합니다.
+          toFirst();
+        });
+    </script>
+
+</body>
+</html>

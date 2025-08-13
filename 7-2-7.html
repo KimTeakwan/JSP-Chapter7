@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select 태그 이벤트</title>
+</head>
+<body>
+
+    <select>
+        <option>떡볶이</option>
+        <option>순대</option>
+        <option>오뎅</option>
+        <option>튀김</option>
+    </select>
+    <p>선택: 떡볶이</p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 조작할 문서 객체를 선택
+            const select = document.querySelector('select');
+            const p = document.querySelector('p');
+
+            // select 태그에 'change' 이벤트 리스너를 추가합니다.
+            // change 이벤트는 선택된 옵션이 바뀔 때 발생합니다.
+            select.addEventListener('change', (event) => {
+                // event.currentTarget: 이벤트가 발생한 요소 (여기서는 select 태그)
+                const options = event.currentTarget.options;
+                const index = event.currentTarget.options.selectedIndex;
+
+                // 선택된 옵션의 텍스트를 p 태그에 출력
+                p.textContent = `선택: ${options[index].textContent}`;
+            });
+        });
+    </script>
+</body>
+</html>

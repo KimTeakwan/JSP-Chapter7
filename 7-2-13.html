@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>녹색 칠판 할 일 목록</title>
+    <style>
+        /* 손글씨 폰트 가져오기 */
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+
+        body {
+            /* 진한 녹색 칠판 배경과 질감으로 변경 */
+            background-color: #2A4B3A;
+            background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/green_dust_and_scratches.png');
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 24px;
+            color: #fafafa; /* 분필 색 */
+        }
+        .container {
+            width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3em;
+            text-align: center;
+            text-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+        }
+        
+        input[type="text"], button {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 1.2em;
+            color: #fafafa;
+        }
+
+        input[type="text"] {
+            width: 75%;
+        }
+
+        #add-button {
+            width: 20%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #add-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px dashed rgba(255, 255, 255, 0.5);
+            margin: 25px 0;
+        }
+
+        #todo-list { margin-top: 20px; }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        input[type="checkbox"] {
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        input[type="checkbox"]:checked {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        input[type="checkbox"]:checked::after {
+            content: '✔';
+            position: absolute;
+            color: #2A4B3A; /* 체크 표시 색상도 녹색 배경과 통일 */
+            font-size: 22px;
+            top: -5px;
+            left: 3px;
+        }
+
+        .todo-item span { flex-grow: 1; margin-left: 15px; }
+
+        .todo-item button {
+            padding: 5px 10px;
+            font-size: 1em;
+            border-color: rgba(255, 138, 128, 0.7);
+        }
+        
+        .todo-item button:hover {
+             background: rgba(255, 138, 128, 0.2);
+             border-color: #ff8a80;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>할 일 목록</h1>
+        <input id="todo" type="text" placeholder="분필로 할 일을 적어보세요...">
+        <button id="add-button">추가</button>
+        <hr>
+        <div id="todo-list"></div>
+    </div>
+
+    <script>
+        // 자바스크립트 로직은 변경 없이 그대로 작동합니다.
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.querySelector('#todo');
+            const todoList = document.querySelector('#todo-list');
+            const addButton = document.querySelector('#add-button');
+            let keyCount = 0;
+
+            const addTodo = () => {
+                if (input.value.trim() === '') {
+                    alert('할 일을 입력해주세요.');
+                    return;
+                }
+                const item = document.createElement('div');
+                const checkbox = document.createElement('input');
+                const text = document.createElement('span');
+                const button = document.createElement('button');
+                const key = keyCount;
+                keyCount += 1;
+
+                item.setAttribute('data-key', key);
+                item.classList.add('todo-item');
+                item.appendChild(checkbox);
+                item.appendChild(text);
+                item.appendChild(button);
+                todoList.appendChild(item);
+
+                checkbox.type = 'checkbox';
+                checkbox.addEventListener('change', (event) => {
+                    text.style.textDecoration = event.target.checked ? 'line-through' : '';
+                });
+
+                text.textContent = input.value;
+                button.textContent = '지우기';
+                button.addEventListener('click', () => {
+                    removeTodo(key);
+                });
+                input.value = '';
+                input.focus();
+            };
+
+            const removeTodo = (key) => {
+                const itemToRemove = document.querySelector(`[data-key="${key}"]`);
+                if (itemToRemove) {
+                    todoList.removeChild(itemToRemove);
+                }
+            };
+            
+            addButton.addEventListener('click', addTodo);
+            input.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    addTodo();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

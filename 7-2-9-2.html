@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>스톱워치 (기록 기능 분리)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .stopwatch {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 340px;
+        }
+
+        .timer-display {
+            font-size: 4em;
+            font-weight: 300;
+            color: #333;
+            margin-bottom: 25px;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-around; /* 버튼 간격 균등하게 */
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* 비활성화된 버튼 스타일 */
+        .btn:disabled {
+            background-color: #eceff1;
+            color: #b0bec5;
+            cursor: not-allowed;
+        }
+
+        #startPauseBtn { background-color: #e8f5e9; color: #2e7d32; }
+        #startPauseBtn.running { background-color: #fff3e0; color: #ef6c00; }
+        #lapBtn { background-color: #e3f2fd; color: #1565c0; }
+        #resetBtn { background-color: #ffebee; color: #c62828; }
+        
+        .laps {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            max-height: 150px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .laps li {
+            padding: 8px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .laps li:first-child {
+            font-weight: bold;
+        }
+
+        .laps .lap-count {
+            color: #757575;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stopwatch">
+        <div class="timer-display">00:00.00</div>
+        <div class="controls">
+            <button class="btn" id="resetBtn" disabled>초기화</button>
+            <button class="btn" id="lapBtn" disabled>기록</button>
+            <button class="btn" id="startPauseBtn">시작</button>
+        </div>
+        <ul class="laps"></ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const timerDisplay = document.querySelector('.timer-display');
+            const startPauseBtn = document.querySelector('#startPauseBtn');
+            const lapBtn = document.querySelector('#lapBtn');
+            const resetBtn = document.querySelector('#resetBtn');
+            const lapsList = document.querySelector('.laps');
+
+            let startTime = 0, elapsedTime = 0, timerId = 0, lapCount = 0;
+            let isRunning = false;
+
+            const formatTime = (time) => {
+                const minutes = Math.floor(time / 60000).toString().padStart(2, '0');
+                const seconds = Math.floor((time % 60000) / 1000).toString().padStart(2, '0');
+                const hundredths = Math.floor((time % 1000) / 10).toString().padStart(2, '0');
+                return `${minutes}:${seconds}.${hundredths}`;
+            };
+            
+            const updateTimer = () => {
+                const totalTime = elapsedTime + (Date.now() - startTime);
+                timerDisplay.textContent = formatTime(totalTime);
+                timerId = requestAnimationFrame(updateTimer);
+            };
+
+            // 시작 / 정지 버튼
+            startPauseBtn.addEventListener('click', () => {
+                if (!isRunning) { // 시작
+                    isRunning = true;
+                    startTime = Date.now();
+                    requestAnimationFrame(updateTimer);
+                    
+                    startPauseBtn.textContent = '정지';
+                    startPauseBtn.classList.add('running');
+                    lapBtn.disabled = false;
+                    resetBtn.disabled = true;
+                } else { // 정지
+                    isRunning = false;
+                    cancelAnimationFrame(timerId);
+                    elapsedTime += Date.now() - startTime;
+                    
+                    startPauseBtn.textContent = '시작';
+                    startPauseBtn.classList.remove('running');
+                    lapBtn.disabled = true;
+                    resetBtn.disabled = false;
+                }
+            });
+
+            // 기록 버튼
+            lapBtn.addEventListener('click', () => {
+                if (!isRunning) return; // 타이머가 멈춰있으면 작동 안함
+                lapCount++;
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+                span.className = 'lap-count';
+                span.textContent = `구간 ${lapCount}`;
+                li.textContent = timerDisplay.textContent;
+                li.prepend(span);
+                lapsList.prepend(li);
+            });
+
+            // 초기화 버튼
+            resetBtn.addEventListener('click', () => {
+                cancelAnimationFrame(timerId);
+                isRunning = false;
+                elapsedTime = 0;
+                lapCount = 0;
+                
+                timerDisplay.textContent = '00:00.00';
+                lapsList.innerHTML = '';
+                startPauseBtn.textContent = '시작';
+                startPauseBtn.classList.remove('running');
+                lapBtn.disabled = true;
+                resetBtn.disabled = true;
+            });
+        });
+    </script>
+</body>
+</html>

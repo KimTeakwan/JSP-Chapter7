@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>기본 이벤트 막기</title>
+</head>
+<body>
+
+    <img src="image/쿼카.jpeg" alt="쿼카 사진">
+    <img src="image/cloud.jpg" alt="구름 사진">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 페이지의 모든 img 태그를 선택
+            const imgs = document.querySelectorAll('img');
+
+            // 각 img 태그에 대해 이벤트 리스너를 설정
+            imgs.forEach((img) => {
+                // 'contextmenu' 이벤트(마우스 오른쪽 클릭)가 발생했을 때
+                img.addEventListener('contextmenu', (event) => {
+                    // event.preventDefault() : 브라우저의 기본 동작을 막습니다.
+                    event.preventDefault();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
